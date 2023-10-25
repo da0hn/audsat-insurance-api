@@ -19,7 +19,7 @@ public class Car extends BaseEntity {
   @Column(name = "MANUFACTURER", nullable = false, length = 50)
   private String manufacturer;
 
-  @Column(name = "YEAR", nullable = false, length = 10)
+  @Column(name = "\"YEAR\"", nullable = false, length = 10)
   private String year;
 
   @Column(name = "FIPE_VALUE")
