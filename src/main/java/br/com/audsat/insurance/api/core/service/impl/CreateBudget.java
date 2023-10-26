@@ -5,6 +5,7 @@ import br.com.audsat.insurance.api.core.dto.CreateBudgetRequest;
 import br.com.audsat.insurance.api.core.dto.CreateBudgetResponse;
 import br.com.audsat.insurance.api.core.exception.BusinessException;
 import br.com.audsat.insurance.api.core.service.ICreateBudget;
+import br.com.audsat.insurance.api.core.shared.ApplicationMessages;
 import br.com.audsat.insurance.api.repositories.CustomerRepository;
 import br.com.audsat.insurance.api.repositories.InsuranceRepository;
 import jakarta.validation.Valid;
@@ -51,9 +52,9 @@ public class CreateBudget implements ICreateBudget {
     return CreateBudgetResponse.of(newInsurance);
   }
 
-  private void ensureCustomerIsMainDriver(CreateBudgetRequest request) {
+  private void ensureCustomerIsMainDriver(final CreateBudgetRequest request) {
     if (!this.customerRepository.isDriverOfCar(request.customerId(), request.carId())) {
-      throw new BusinessException("car.does.not.belong.to.customer");
+      throw new BusinessException(ApplicationMessages.CAR_DOES_NOT_BELONG_TO_CUSTOMER);
     }
   }
 

@@ -1,5 +1,6 @@
 package br.com.audsat.insurance.api.core.domain;
 
+import br.com.audsat.insurance.api.core.shared.ApplicationMessages;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -54,8 +55,8 @@ public class Insurance extends BaseEntity {
   public Insurance() { }
 
   public static Insurance createBudget(final Car car, final Customer customer, final boolean active) {
-    Assert.notNull(car, "car.cannot.be.null");
-    Assert.notNull(customer, "customer.cannot.be.null");
+    Assert.notNull(car, ApplicationMessages.CAR_CANNOT_BE_NULL);
+    Assert.notNull(customer, ApplicationMessages.CUSTOMER_CANNOT_BE_NULL);
 
     return Insurance.builder()
       .creationDate(Instant.now())

@@ -3,6 +3,7 @@ package br.com.audsat.insurance.api.core.service.impl;
 import br.com.audsat.insurance.api.core.domain.Car;
 import br.com.audsat.insurance.api.core.exception.ResourceNotFoundException;
 import br.com.audsat.insurance.api.core.service.IGetResource;
+import br.com.audsat.insurance.api.core.shared.ApplicationMessages;
 import br.com.audsat.insurance.api.repositories.CarRepository;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class GetCarById implements IGetResource<Car> {
   @Override
   public Car execute(final Long id) {
     return this.repository.findById(id)
-      .orElseThrow(ResourceNotFoundException.error("car.not.found"));
+      .orElseThrow(ResourceNotFoundException.error(ApplicationMessages.CAR_NOT_FOUND));
   }
 
 }
