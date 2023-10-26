@@ -1,0 +1,315 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8100/insurance
+    description: Generated server url
+paths:
+  /budget/{insuranceId}:
+    get:
+      tags:
+        - insurance-controller
+      operationId: getBudgetDetail
+      parameters:
+        - name: insuranceId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ApiResponseObject'
+                  - type: object
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseBudgetDetail'
+    put:
+      tags:
+        - insurance-controller
+      operationId: updateBudget
+      parameters:
+        - name: insuranceId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBudgetRequest'
+        required: true
+      responses:
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ApiResponseObject'
+                  - type: object
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseVoid'
+    delete:
+      tags:
+        - insurance-controller
+      operationId: deleteBudgetById
+      parameters:
+        - name: insuranceId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ApiResponseObject'
+                  - type: object
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseVoid'
+  /budget:
+    post:
+      tags:
+        - insurance-controller
+      operationId: createBudget
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBudgetRequest'
+        required: true
+      responses:
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ApiResponseObject'
+                  - type: object
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseObject'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiResponseCreateBudgetResponse'
+components:
+  schemas:
+    ApiResponseObject:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+    UpdateBudgetRequest:
+      required:
+        - carId
+        - insuranceId
+      type: object
+      properties:
+        insuranceId:
+          type: integer
+          format: int64
+          writeOnly: true
+        customerId:
+          type: integer
+          format: int64
+        carId:
+          type: integer
+          format: int64
+        isActive:
+          type: boolean
+    ApiResponseVoid:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+    CreateBudgetRequest:
+      required:
+        - carId
+        - customerId
+      type: object
+      properties:
+        customerId:
+          type: integer
+          format: int64
+        carId:
+          type: integer
+          format: int64
+        isActive:
+          type: boolean
+    ApiResponseCreateBudgetResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/CreateBudgetResponse'
+    CreateBudgetResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    ApiResponseBudgetDetail:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/BudgetDetail'
+    BudgetCarDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        model:
+          type: string
+        fipeValue:
+          type: number
+          format: double
+        year:
+          type: string
+        manufacturer:
+          type: string
+    BudgetCustomerDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        birthdate:
+          type: string
+          format: date
+        document:
+          type: string
+    BudgetDetail:
+      type: object
+      properties:
+        insuranceId:
+          type: integer
+          format: int64
+        creationDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        isActive:
+          type: boolean
+        budget:
+          type: number
+        car:
+          $ref: '#/components/schemas/BudgetCarDetail'
+        customer:
+          $ref: '#/components/schemas/BudgetCustomerDetail'
