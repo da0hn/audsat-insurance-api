@@ -19,10 +19,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-@Tags({ @Tag("unit") })
+@Tags({ @Tag("unit"), @Tag("all") })
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Create budget Use Case")
-class CreateBudgetTest {
+class CreateBudgetUnitTest {
 
   private CreateBudget createBudget;
 
