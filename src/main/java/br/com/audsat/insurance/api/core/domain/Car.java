@@ -2,9 +2,11 @@ package br.com.audsat.insurance.api.core.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.io.Serial;
+import java.util.Set;
 
 @Entity
 @Table(name = "CARS")
@@ -25,17 +27,36 @@ public class Car extends BaseEntity {
   @Column(name = "FIPE_VALUE")
   private Double fipeValue;
 
-  public Car(final Long id, final String model, final String manufacturer, final String year, final Double fipeValue) {
+  @OneToMany(mappedBy = "car")
+  private Set<Claim> claims;
+
+  public Car(
+    final Long id,
+    final String model,
+    final String manufacturer,
+    final String year,
+    final Double fipeValue,
+    final Set<Claim> claims
+  ) {
     super(id);
     this.model = model;
     this.manufacturer = manufacturer;
     this.year = year;
     this.fipeValue = fipeValue;
+    this.claims = claims;
   }
 
   public Car() { }
 
   public static CarBuilder builder() { return new CarBuilder(); }
+
+  public Set<Claim> getClaims() {
+    return this.claims;
+  }
+
+  public void setClaims(final Set<Claim> claims) {
+    this.claims = claims;
+  }
 
   public String getModel() { return this.model; }
 
@@ -65,6 +86,8 @@ public class Car extends BaseEntity {
 
     private Double fipeValue;
 
+    private Set<Claim> claims;
+
     CarBuilder() { }
 
     public CarBuilder model(final String model) {
@@ -74,6 +97,11 @@ public class Car extends BaseEntity {
 
     public CarBuilder manufacturer(final String manufacturer) {
       this.manufacturer = manufacturer;
+      return this;
+    }
+
+    public CarBuilder claims(final Set<Claim> claims) {
+      this.claims = claims;
       return this;
     }
 
@@ -93,7 +121,7 @@ public class Car extends BaseEntity {
     }
 
     public Car build() {
-      return new Car(this.id, this.model, this.manufacturer, this.year, this.fipeValue);
+      return new Car(this.id, this.model, this.manufacturer, this.year, this.fipeValue, this.claims);
     }
 
   }

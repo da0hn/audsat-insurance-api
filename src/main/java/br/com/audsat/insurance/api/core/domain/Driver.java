@@ -25,6 +25,9 @@ public class Driver extends BaseEntity {
   @OneToMany(mappedBy = "driver")
   private Set<CarDrivers> carDrivers;
 
+  @OneToMany(mappedBy = "driver")
+  private Set<Claim> claims;
+
   public Driver(final Long id, final String document, final LocalDate birthdate, final Set<CarDrivers> carDrivers) {
     super(id);
     this.document = document;
@@ -35,6 +38,14 @@ public class Driver extends BaseEntity {
   public Driver() { }
 
   public static DriverBuilder builder() { return new DriverBuilder(); }
+
+  public Set<Claim> getClaims() {
+    return this.claims;
+  }
+
+  public void setClaims(final Set<Claim> claims) {
+    this.claims = claims;
+  }
 
   public String getDocument() { return this.document; }
 

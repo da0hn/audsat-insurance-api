@@ -5,8 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import java.io.Serial;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "CUSTOMER")
@@ -28,6 +30,8 @@ public class Customer extends BaseEntity {
     this.driver = driver;
   }
 
+  public Customer() { }
+
   public static CustomerBuilder builder() { return new CustomerBuilder(); }
 
   public String getName() { return this.name; }
@@ -37,6 +41,16 @@ public class Customer extends BaseEntity {
   public Driver getDriver() { return this.driver; }
 
   public void setDriver(final Driver driver) { this.driver = driver; }
+
+  @Transient
+  public LocalDate getBirthdate() {
+    return this.driver.getBirthdate();
+  }
+
+  @Transient
+  public String getDocument() {
+    return this.driver.getDocument();
+  }
 
   public static class CustomerBuilder {
 
