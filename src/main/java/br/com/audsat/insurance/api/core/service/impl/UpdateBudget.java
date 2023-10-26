@@ -4,6 +4,7 @@ import br.com.audsat.insurance.api.core.domain.Insurance;
 import br.com.audsat.insurance.api.core.dto.UpdateBudgetRequest;
 import br.com.audsat.insurance.api.core.exception.BusinessException;
 import br.com.audsat.insurance.api.core.service.IUpdateBudget;
+import br.com.audsat.insurance.api.core.shared.ApplicationMessages;
 import br.com.audsat.insurance.api.repositories.CustomerRepository;
 import br.com.audsat.insurance.api.repositories.InsuranceRepository;
 import jakarta.validation.Valid;
@@ -55,7 +56,7 @@ public class UpdateBudget implements IUpdateBudget {
 
   private void ensureCustomerIsMainDriver(final Insurance request) {
     if (!this.customerRepository.isDriverOfCar(request.getCustomer().getId(), request.getCar().getId())) {
-      throw new BusinessException("car.does.not.belong.to.customer");
+      throw new BusinessException(ApplicationMessages.CAR_DOES_NOT_BELONG_TO_CUSTOMER);
     }
   }
 
