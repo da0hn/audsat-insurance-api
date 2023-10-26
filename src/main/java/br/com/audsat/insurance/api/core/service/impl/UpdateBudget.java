@@ -46,6 +46,8 @@ public class UpdateBudget implements IUpdateBudget {
     request.carId().map(this.getCarById::execute).ifPresent(insurance::setCar);
     request.isActive().ifPresent(insurance::setIsActive);
 
+    insurance.updated();
+
     this.ensureCustomerIsMainDriver(insurance);
 
     this.repository.save(insurance);

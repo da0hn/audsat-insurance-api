@@ -88,6 +88,10 @@ public class Insurance extends BaseEntity {
 
   public void setIsActive(final Boolean isActive) { this.isActive = isActive; }
 
+  public void updated() {
+    this.updatedDate = Instant.now();
+  }
+
   public static class InsuranceBuilder {
 
     private Long id;
