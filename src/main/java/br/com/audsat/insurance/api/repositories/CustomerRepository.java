@@ -15,7 +15,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
       end
     from Customer customer
     join customer.driver driver
-    join driver.carsDriver carsDriver
+    join driver.carDrivers carsDriver
     join carsDriver.car car
     where
       customer.id = :customerId and car.id = :carId
