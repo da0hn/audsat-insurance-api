@@ -6,10 +6,12 @@ import br.com.audsat.insurance.api.core.dto.CreateBudgetRequest;
 import br.com.audsat.insurance.api.core.dto.CreateBudgetResponse;
 import br.com.audsat.insurance.api.core.dto.UpdateBudgetRequest;
 import br.com.audsat.insurance.api.core.service.ICreateBudget;
+import br.com.audsat.insurance.api.core.service.IDeleteBudget;
 import br.com.audsat.insurance.api.core.service.IGetBudgetDetail;
 import br.com.audsat.insurance.api.core.service.IUpdateBudget;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,16 +27,20 @@ public class InsuranceController {
 
   private final ICreateBudget createBudget;
 
+  private final IDeleteBudget deleteBudget;
+
   private final IUpdateBudget updateBudget;
 
   private final IGetBudgetDetail getBudgetDetail;
 
   public InsuranceController(
     final ICreateBudget createBudget,
+    final IDeleteBudget deleteBudget,
     final IUpdateBudget updateBudget,
     final IGetBudgetDetail getBudgetDetail
   ) {
     this.createBudget = createBudget;
+    this.deleteBudget = deleteBudget;
     this.updateBudget = updateBudget;
     this.getBudgetDetail = getBudgetDetail;
   }
@@ -62,6 +68,12 @@ public class InsuranceController {
   public ResponseEntity<ApiResponse<BudgetDetail>> getBudgetDetail(@PathVariable final Long insuranceId) {
     final var response = this.getBudgetDetail.execute(insuranceId);
     return ResponseEntity.ok(ApiResponse.of(response));
+  }
+
+  @DeleteMapping("/{insuranceId}")
+  public ResponseEntity<ApiResponse<Void>> deleteBudgetById(@PathVariable final Long insuranceId) {
+    this.deleteBudget.execute(insuranceId);
+    return ResponseEntity.ok(ApiResponse.empty());
   }
 
 }
