@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  insurance-api:
+    image: insurance-api
+    container_name: insurance-api
+    build:
+      context: .
+    restart: always
+    ports:
+      - '8100:8100'
