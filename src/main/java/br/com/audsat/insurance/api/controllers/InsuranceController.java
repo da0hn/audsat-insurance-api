@@ -4,13 +4,16 @@ import br.com.audsat.insurance.api.controllers.response.ApiResponse;
 import br.com.audsat.insurance.api.core.dto.BudgetDetail;
 import br.com.audsat.insurance.api.core.dto.CreateBudgetRequest;
 import br.com.audsat.insurance.api.core.dto.CreateBudgetResponse;
+import br.com.audsat.insurance.api.core.dto.UpdateBudgetRequest;
 import br.com.audsat.insurance.api.core.service.ICreateBudget;
 import br.com.audsat.insurance.api.core.service.IGetBudgetDetail;
+import br.com.audsat.insurance.api.core.service.IUpdateBudget;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,10 +25,17 @@ public class InsuranceController {
 
   private final ICreateBudget createBudget;
 
+  private final IUpdateBudget updateBudget;
+
   private final IGetBudgetDetail getBudgetDetail;
 
-  public InsuranceController(final ICreateBudget createBudget, final IGetBudgetDetail getBudgetDetail) {
+  public InsuranceController(
+    final ICreateBudget createBudget,
+    final IUpdateBudget updateBudget,
+    final IGetBudgetDetail getBudgetDetail
+  ) {
     this.createBudget = createBudget;
+    this.updateBudget = updateBudget;
     this.getBudgetDetail = getBudgetDetail;
   }
 
@@ -37,6 +47,15 @@ public class InsuranceController {
       .buildAndExpand(response.id())
       .toUri();
     return ResponseEntity.created(location).body(ApiResponse.of(response));
+  }
+
+  @PutMapping("/{insuranceId}")
+  public ResponseEntity<ApiResponse<Void>> updateBudget(
+    @PathVariable final Long insuranceId,
+    @RequestBody final UpdateBudgetRequest request
+  ) {
+    this.updateBudget.execute(request.withInsuranceId(insuranceId));
+    return ResponseEntity.ok(ApiResponse.empty());
   }
 
   @GetMapping("/{insuranceId}")
