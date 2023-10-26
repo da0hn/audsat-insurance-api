@@ -44,13 +44,17 @@ public class CreateBudget implements ICreateBudget {
       request.isActive()
     );
 
-    if (!this.customerRepository.isDriverOfCar(request.customerId(), request.carId())) {
-      throw new BusinessException("car.does.not.belong.to.customer");
-    }
+    this.ensureCustomerIsMainDriver(request);
 
     final var newInsurance = this.repository.save(insurance);
 
     return CreateBudgetResponse.of(newInsurance);
+  }
+
+  private void ensureCustomerIsMainDriver(CreateBudgetRequest request) {
+    if (!this.customerRepository.isDriverOfCar(request.customerId(), request.carId())) {
+      throw new BusinessException("car.does.not.belong.to.customer");
+    }
   }
 
 }
